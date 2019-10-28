@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from knox.models import AuthToken
 
 from django.contrib.auth.models import User
@@ -10,6 +11,7 @@ from .serializers import (
 )
 
 
+# REGISTER USER
 class RegisterAPIView(APIView):
   serializer = RegisterSerializer
   model = User
@@ -23,6 +25,7 @@ class RegisterAPIView(APIView):
     })
 
 
+# AUTHENTICATE USER
 class LoginAPIView(APIView):
   serializer = LoginSerializer
   model = User
@@ -34,3 +37,14 @@ class LoginAPIView(APIView):
     return Response({
       "token": AuthToken.objects.create(user)[1]
     })
+
+
+# GET CURRENT USER
+class GetUserAPIView(APIView):
+  serializer = UserSerializer
+  permission_classes = [IsAuthenticated]
+
+  def get(self, request, *args, **kwargs):
+    user = request.user
+    serializer = self.serializer(user)
+    return Response(serializer.data, status=200)
