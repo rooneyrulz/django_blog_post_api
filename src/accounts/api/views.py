@@ -19,6 +19,18 @@ class RegisterAPIView(APIView):
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
     return Response({
-      "user": serializer.data,
+      "token": AuthToken.objects.create(user)[1]
+    })
+
+
+class LoginAPIView(APIView):
+  serializer = LoginSerializer
+  model = User
+
+  def post(self, request, *args, **kwargs):
+    serializer = self.serializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user = serializer.validated_data
+    return Response({
       "token": AuthToken.objects.create(user)[1]
     })
