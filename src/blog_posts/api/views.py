@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 
 from .serializers import BlogPostSerializer
@@ -8,6 +9,7 @@ from blog_posts.models import BlogPost
 class ListCreateAPIView(APIView):
   model = BlogPost
   serializer = BlogPostSerializer
+  permission_classes = [IsAuthenticated]
 
   def get(self, request, *args, **kwargs):
     qs = self.model.objects.all()
@@ -24,6 +26,7 @@ class ListCreateAPIView(APIView):
 class DetailUpdateDeleteAPIView(APIView):
   model = BlogPost
   serializer = BlogPostSerializer
+  permission_classes = [IsAuthenticated]
 
   def get_object(self, id):
     return get_object_or_404(self.model, pk=id)

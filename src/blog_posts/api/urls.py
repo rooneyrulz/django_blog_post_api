@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import ListCreateAPIView, DetailUpdateDeleteAPIView
 
+app_name = 'blog_posts'
 urlpatterns = [
   path(
     'blog-posts',
