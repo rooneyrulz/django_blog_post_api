@@ -9,6 +9,7 @@ from .serializers import (
   LoginSerializer
 )
 
+
 class RegisterAPIView(APIView):
   serializer = RegisterSerializer
   model = User
